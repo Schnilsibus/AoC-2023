@@ -1,6 +1,3 @@
-import "stdio.h"
-
-
-static void main(*argv: string, argc: int) {
-    print("Hello World")
+static void main(int argc, char *argv[]) {
+    
 }
