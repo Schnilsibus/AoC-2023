@@ -8,8 +8,8 @@ int char_size(const char *cs) {
     return sizeof(cs) / sizeof(char);
 }
 
-char *increase_size(const char *cs) {
-    return realloc(cs, sizeof(cs) + (sizeof(char) * SIZE_STEP));
+char *increase_size(char *cs) {
+    return realloc(cs, sizeof(cs) + sizeof(char) * SIZE_STEP);
 }
 
 char *read_file(const char *path) {
@@ -34,7 +34,7 @@ char *read_file(const char *path) {
         ++char_count;
     }
     fclose(fp);
-    content[char_count] = "\0";
+    content[char_count] = '\0';
     trim(content);
     return content;
 }
