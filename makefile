@@ -1,2 +1,10 @@
+.PHONY: all
+all: lib
 
-default
+.PHONY: lib
+lib:
+	make -f .\lib\makefile
+
+clean:
+	del *.o
+	del *.exe
