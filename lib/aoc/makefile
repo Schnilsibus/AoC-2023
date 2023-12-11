@@ -1,4 +1,4 @@
 all: input.o
 
 input.o: input.c input.h
-	gcc -c input.c
+	$(CC) -c input.c $(CFLAGS)

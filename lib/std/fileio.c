@@ -40,6 +40,5 @@ char *read_file(const char *path) {
 }
 
 char **read_lines(const char *path) {
-    char *content = read_file(path);
     return NULL;
 }
