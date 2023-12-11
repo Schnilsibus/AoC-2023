@@ -1,4 +1,6 @@
-all: input.o
+BUILD_DIR := ..\$(BUILD_DIR)\aoc
 
-input.o: input.c input.h
-	$(CC) -c input.c $(CFLAGS)
+all: $(BUILD_DIR)\input.o
+
+$(BUILD_DIR)\input.o: input.c input.h
+	$(CC) -c input.c $(CFLAGS) -o $(BUILD_DIR)\input.o
