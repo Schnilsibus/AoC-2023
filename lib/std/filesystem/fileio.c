@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "string.h"
+#include "..\base\stringx.h"
 
 
 #define SIZE_STEP 256
@@ -39,6 +39,9 @@ char *read_file(const char *path) {
 }
 
 
-char **read_lines(const char *path) {
-    return NULL;
+char **read_lines(const char *path, int *line_count) {
+    char *file_string = read_file(path);
+    char **lines = split(file_string, "\n", line_count);
+    free(file_string);
+    return lines;
 }

@@ -1,9 +1,18 @@
 BUILD_DIR := ..\$(BUILD_DIR)\std
 
-all: $(BUILD_DIR)\fileio.o $(BUILD_DIR)\string.o
+.PHONY: all
+all: base filesystem
 
-$(BUILD_DIR)\fileio.o: fileio.c fileio.h
-	$(CC) -c fileio.c $(CFLAGS) -o $(BUILD_DIR)\fileio.o
+.PHONY: base
+base: $(BUILD_DIR)\base
+	make -C .\base SHELL=$(SHELL)
 
-$(BUILD_DIR)\string.o: string.c string.h
-	$(CC) -c string.c $(CFLAGS) -o $(BUILD_DIR)\string.o
+$(BUILD_DIR)\base:
+	mkdir $(BUILD_DIR)\base
+
+.PHONY: filesystem
+filesystem: $(BUILD_DIR)\filesystem
+	make -C .\filesystem SHELL=$(SHELL)
+
+$(BUILD_DIR)\filesystem:
+	mkdir $(BUILD_DIR)\filesystem

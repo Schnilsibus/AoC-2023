@@ -3,6 +3,7 @@ CFLAGS := -ansi -pedantic -Wall -Wextra
 export CC
 export CFLAGS
 
+.PHONY: all
 all: lib
 
 .PHONY: lib
