@@ -1,0 +1,8 @@
+SHELL := C:\Windows\System32\cmd.exe
+
+SRCS := .\lib
+
+FILES := $(shell dir SRCS /S /B *.h)
+
+print:
+	@echo FILES: $(FILES)

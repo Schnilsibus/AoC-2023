@@ -5,6 +5,7 @@ CC := gcc
 CFLAGS := -ansi -pedantic -Wall -Wextra
 AOC_BUILD_DIR := .\aocbuild
 AOC_DAYS := $(wildcard Day*)
+export SHELL
 export CC
 export CFLAGS
 
