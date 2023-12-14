@@ -1,4 +1,3 @@
-SHELL := C:\Windows\System32\cmd.exe
 BUILD_DIR := ..\libbuild
 export BUILD_DIR
 
@@ -17,4 +16,4 @@ $(BUILD_DIR)\std:
 
 .PHONY: clean
 clean:
-	rmdir /S /Q $(BUILD_DIR)
+	-rmdir /S /Q $(BUILD_DIR)
