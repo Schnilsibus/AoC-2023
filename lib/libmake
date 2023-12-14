@@ -1,0 +1,24 @@
+BUILD_DIR := ..\libbuild
+SOURCE := $(shell cd)
+SUBDIRS := $(shell dir /S /B /AD)
+HEADERS := $(shell dir /S /B *.h)
+
+
+object_files = $(shell dir $(BUILD_DIR) /S /B *.o)
+
+
+.PHONY: all
+all: $(BUILD_DIR) $(SUBDIRS) $(HEADERS)
+
+$(BUILD_DIR):
+	mkdir $(BUILD_DIR)
+
+$(SUBDIRS):
+
+
+$(HEADERS):
+
+
+.PHONY: clean
+clean:
+	-rmdir /S /Q $(BUILD_DIR)
