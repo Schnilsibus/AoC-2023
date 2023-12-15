@@ -1,22 +1,22 @@
 include gmsl
+include lib\libmake
 
 SHELL := C:\Windows\System32\cmd.exe
 CC := gcc
 CFLAGS := -ansi -pedantic -Wall -Wextra
-AOC_BUILD_DIR := .\aocbuild
+AOC_BUILD_DIR := aocbuild
 AOC_DAYS := $(wildcard Day*)
 export SHELL
 export CC
 export CFLAGS
 
 .PHONY: all
-all: lib $(AOC_BUILD_DIR) $(AOC_DAYS)
+all: lib
 
 .PHONY: lib
 lib:
-	make -C .\lib SHELL=$(SHELL)
+	make -C .\lib -f libmake
 
-.PHONY: $(AOC_BUILD_DIR)
 $(AOC_BUILD_DIR):
 	mkdir $(AOC_BUILD_DIR)
 
@@ -28,4 +28,4 @@ $(AOC_DAYS):
 .PHONY: clean
 clean:
 	-rmdir /S /Q $(AOC_BUILD_DIR)
-	make -C .\lib clean
+	make -C .\lib -f libmake clean
