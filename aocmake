@@ -1,0 +1,40 @@
+include gmsl
+include lib\libmake
+
+SHELL := cmd
+CC := gcc
+CFLAGS := -ansi -pedantic -Wall -Wextra
+AOC_BUILD_DIR := aocbuild
+AOC_DAYS := $(wildcard Day*)
+BUILD_DAYS := $(addprefix $(AOC_BUILD_DIR)\,$(addsuffix .exe,$(call lc,$(AOC_DAYS))))
+export CC
+export CFLAGS
+
+.PHONY: all
+all: lib $(AOC_BUILD_DIR) $(BUILD_DAYS)
+
+.PHONY: lib
+lib:
+	@echo building lib
+	make -C lib -f libmake
+
+$(AOC_BUILD_DIR):
+	@echo creationg aoc build dir
+	mkdir $(AOC_BUILD_DIR)
+
+$(BUILD_DAYS): $(call merge,\,$(basename $(notdir $@)))
+	$(CC) $(CFLAGS) $(basename $(notdir $@))\main.c $(shell cd libbuild && dir /S /B *.o) -o $@ 
+
+.PHONY: clean
+clean:
+	cd lib && make -f libmake libclean
+	-rmdir /S /Q $(AOC_BUILD_DIR)
+
+.PHONY: info
+info:
+	cd lib && make -f libmake libinfo
+	@echo ---------- aocmake info ----------
+	@echo shell: $(SHELL)
+	@echo cwd: $(shell cd)
+	@echo targets: $(BUILD_DAYS)
+	@echo ----------------------------------
