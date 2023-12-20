@@ -1,6 +1,7 @@
 SHELL := cmd
 
-LIB_DIR_NAME := $(basename $(notdir $(addsuffix .c,$(shell cd))))
+CWD := $(shell cd)
+LIB_DIR_NAME := $(basename $(notdir $(addsuffix .c,$(CWD))))
 BUILD_DIR_NAME ?= libbuild
 
 BUILD_DIR := ..\$(BUILD_DIR_NAME)
@@ -26,8 +27,8 @@ $(BUILD_DIR):
 $(SUBDIRS):
 	mkdir $@
 
-$(OBJECT_TARGETS): $(call _build_to_src, $(call _o_to_c,$@) $(call _o_to_h,$@))
-	$(CC) -c $(call _build_to_src, $(call _o_to_c,$@)) $(CFLAGS) -o $@
+$(OBJECT_TARGETS): $(CWD)%.o: %
+	@echo Target: $@, Prerequisites: $^
 
 .PHONY: libclean
 libclean:
@@ -37,7 +38,7 @@ libclean:
 libinfo:
 	@echo ---------- libmake info ----------
 	@echo shell: $(SHELL)
-	@echo cwd: $(shell cd)
+	@echo cwd: $(CWD)
 	@echo build dir: $(BUILD_DIR)
 	@echo targets: $(OBJECT_TARGETS)
 	@echo ----------------------------------

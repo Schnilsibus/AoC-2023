@@ -5,7 +5,7 @@
 char *read_file(const char *path);
 
 
-char **read_lines(const char *path);
+char **read_lines(const char *path, int *line_count);
 
 
 #endif

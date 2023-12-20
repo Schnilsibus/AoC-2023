@@ -13,11 +13,7 @@ char *read_file(const char *path) {
     int buffer_index = 0;
     char c;
 
-    printf("path: %s\n", path);
-    printf("fp: %p\n", (void *) fp);
-
     if (fp == NULL) {
-        printf("fopen fail\n");
         return NULL;
     }
 
