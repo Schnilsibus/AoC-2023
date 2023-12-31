@@ -1,5 +1,3 @@
-include gmsl
-
 SHELL := cmd
 CC := gcc
 CFLAGS := -ansi -pedantic -Wall -Wextra
@@ -16,11 +14,11 @@ $(AOC_BUILD_DIR):
 	mkdir $(AOC_BUILD_DIR)
 
 $(BUILD_DAYS): $(AOC_BUILD_DIR)\\%.exe: %\main.c
-	@echo ------- target info --------
+	@echo ------- building --------
 	@echo Target: $@
-	@echo Prerequisites: $^
-	@echo ------- target info --------
+	@echo Prerequisites: $^	
 	$(CC) $(CFLAGS) $^ -o $@
+	@echo ------- building --------
 
 .PHONY: clean
 clean:
