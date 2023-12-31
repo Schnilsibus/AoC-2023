@@ -1,42 +1,34 @@
 include gmsl
-include lib\libmake
 
 SHELL := cmd
 CC := gcc
 CFLAGS := -ansi -pedantic -Wall -Wextra
+
 AOC_BUILD_DIR := aocbuild
-AOC_DAYS := $(wildcard day*)
-BUILD_DAYS := $(addprefix $(AOC_BUILD_DIR)\,$(addsuffix .exe,$(call lc,$(AOC_DAYS))))
-export CC
-export CFLAGS
+BUILD_DAYS := $(addprefix $(AOC_BUILD_DIR)\,$(addsuffix .exe,$(wildcard day*)))
 
 _exe_to_c = $(call merge,\,$(basename $(notdir $(1))) \main.c)
 
 .PHONY: all
-all: lib $(AOC_BUILD_DIR) $(BUILD_DAYS)
-
-.PHONY: lib
-lib:
-	@echo building lib
-	make -C lib -f libmake
+all: info $(AOC_BUILD_DIR) $(BUILD_DAYS)
 
 $(AOC_BUILD_DIR):
-	@echo creationg aoc build dir
 	mkdir $(AOC_BUILD_DIR)
 
 $(BUILD_DAYS): $(AOC_BUILD_DIR)\\%.exe: %\main.c
-	@echo Target: $@, Prerequisites: $^
+	@echo ------- target info --------
+	@echo Target: $@
+	@echo Prerequisites: $^
+	@echo ------- target info --------
+	$(CC) $(CFLAGS) $^ -o $@
 
 .PHONY: clean
 clean:
-	cd lib && make -f libmake libclean
 	-rmdir /S /Q $(AOC_BUILD_DIR)
 
 .PHONY: info
 info:
-	cd lib && make -f libmake libinfo
 	@echo ---------- aocmake info ----------
 	@echo shell: $(SHELL)
-	@echo cwd: $(shell cd)
 	@echo targets: $(BUILD_DAYS)
-	@echo ----------------------------------
+	@echo ---------- aocmake info ----------

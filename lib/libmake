@@ -1,22 +1,23 @@
 SHELL := cmd
+CC := gcc
+CFLAGS := -ansi -pedantic -Wall -Wextra
 
-CWD := $(shell cd)
-LIB_DIR_NAME := $(basename $(notdir $(addsuffix .c,$(CWD))))
-BUILD_DIR_NAME ?= libbuild
-
-BUILD_DIR := ..\$(BUILD_DIR_NAME)
-SRC_SUBDIRS := $(shell dir /S /B /AD)
-HEADERS := $(shell dir $(LIB_DIR_NAME) /S /B *.h)
-
-_build_to_src = $(subst $(BUILD_DIR_NAME),$(LIB_DIR_NAME),$(1))
 _src_to_build = $(subst $(LIB_DIR_NAME),$(BUILD_DIR_NAME),$(1))
 
 _h_to_o = $(subst .h,.o,$(1))
 _o_to_h = $(subst .o,.h,$(1))
 _o_to_c = $(subst .o,.c,$(1))
 
+LIB_DIR := $(shell cd)
+LIB_DIR_NAME := $(basename $(notdir $(addsuffix .c,$(LIB_DIR))))
+BUILD_DIR_NAME := libbuild
+
+BUILD_DIR := $(call _src_to_build,$(LIB_DIR))
+SRC_SUBDIRS := $(shell dir /S /B /AD)
+HEADERS := $(shell dir $(LIB_DIR_NAME) /S /B *.h)
+
 SUBDIRS := $(call _src_to_build,$(SRC_SUBDIRS))
-OBJECT_TARGETS := $(call _src_to_build,$(call _h_to_o, $(HEADERS)))
+OBJECT_TARGETS := $(call _src_to_build,$(call _h_to_o,$(HEADERS)))
 
 .PHONY: all
 all: $(BUILD_DIR) $(SUBDIRS) $(OBJECT_TARGETS)
@@ -27,18 +28,25 @@ $(BUILD_DIR):
 $(SUBDIRS):
 	mkdir $@
 
-$(OBJECT_TARGETS): $(CWD)%.o: %
-	@echo Target: $@, Prerequisites: $^
+.SECONDEXPANSION:
+.PHONY: $(OBJECT_TARGETS)
+$(OBJECT_TARGETS): $(BUILD_DIR)\\%: $$(addprefix $(LIB_DIR)\,$$(call _o_to_c,%) $$(call _o_to_h,%))
+	@echo ------- target info --------
+	@echo Target: $@
+	@echo Prerequisites: $^
+	@echo ------- target info --------
+	$(CC) $(CFLAGS) -c $^ 
 
-.PHONY: libclean
-libclean:
+
+.PHONY: clean
+clean:
 	-rmdir /S /Q $(BUILD_DIR)
 
 .PHONY: info
-libinfo:
+info:
 	@echo ---------- libmake info ----------
 	@echo shell: $(SHELL)
-	@echo cwd: $(CWD)
+	@echo lib dir: $(LIB_DIR)
 	@echo build dir: $(BUILD_DIR)
 	@echo targets: $(OBJECT_TARGETS)
-	@echo ----------------------------------
+	@echo ---------- libmake info ----------
